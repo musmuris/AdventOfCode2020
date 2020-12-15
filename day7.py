@@ -24,9 +24,11 @@ input = open("day7input.txt", "r").read().splitlines()
 # "dark violet bags contain no other bags."
 # ]
 
-contains = {}
-reversed = {}
 
+contains = {}  # What bags contain
+reversed = {}  # What bags can I fit in
+
+# Build the lookups
 rex = re.compile(r"([\d]*) ?(\w* \w*) bags?")
 for line in input:
     matches = rex.findall(line)
@@ -41,6 +43,7 @@ for line in input:
                 reversed[col] = set()
             reversed[col].add(outerBag) 
     
+# Part 1 traverse all bags that can contain shiny gold
 toCheck = ["shiny gold"]
 canContain = set()
 while len(toCheck) > 0:
@@ -53,6 +56,7 @@ while len(toCheck) > 0:
 
 print(len(canContain))
 
+# Part 2 Walk the tree of how many bags each one contains
 def recurseBags(color):
     if color not in contains:
         return 1
@@ -61,5 +65,5 @@ def recurseBags(color):
         count = count + num * recurseBags(col)
     return count
 
-# -1 as we already "own" the shiny gold bag!
-print(recurseBags("shiny gold")-1)
+print(recurseBags("shiny gold")-1)  # -1 as we already "own" the shiny gold bag!
+
